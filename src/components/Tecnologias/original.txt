@@ -1,0 +1,111 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import gorra1 from "../../assets/caps/gorra1.png";
+import gorra2 from "../../assets/caps/gorra2.png";
+import gorra3 from "../../assets/caps/gorra3.png";
+import gorra4 from "../../assets/caps/gorra4.png";
+import { FadeLeft } from '../../utility/animation';
+
+const ProductsData = [
+    {
+        id: 1,
+        title: "Gorra 1",
+        link: "/page1",
+        price: "$1",
+        img: gorra1,
+        imgUrl: "https://ibb.co/4RHD9K6",
+        delay: 0.3
+    },
+    {
+        id: 2,
+        title: "Gorra 2",
+        link: "/page1",
+        price: "$1",
+        img: gorra2,
+        imgUrl: "https://ibb.co/NF4yVcQ",
+        delay: 0.3
+    },
+    {
+        id: 3,
+        title: "Gorra 3",
+        link: "/page1",
+        price: "$1",
+        img: gorra3,
+        imgUrl: "https://ibb.co/fkbmKR6",
+        delay: 0.6
+    },
+    {
+        id: 4,
+        title: "Gorra 4",
+        link: "/page1",
+        price: "$1",
+        img: gorra4,
+        imgUrl: "https://ibb.co/XLp14W0",
+        delay: 0.9
+    },
+
+
+];
+
+const Products = () => {
+    const sendWhatsAppMessage = (product) => {
+        const message = `Hola, vengo de la pagina web de suarez caps, estoy interesado en este producto: '${product.title}' con un valor de ${product.price}`;
+        const whatsappUrl = `https://web.whatsapp.com/send?phone=+541137796683&text=${encodeURIComponent(message)}%0A${encodeURIComponent(product.imgUrl)}`;
+
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const alertMessage = isMobile
+            ? "WhatsApp se abrirá ahora. Aguarde 5 segundos hasta que cargue la imagen antes de enviar el mensaje."
+            : "WhatsApp se abrirá ahora. Aguarde unos segundos hasta que cargue la imagen antes de enviar el mensaje.";
+        const delay = isMobile ? 5000 : 10000;
+
+        alert(alertMessage);
+
+        const whatsappAppUrl = isMobile
+            ? `whatsapp://send?phone=+541137796683&text=${encodeURIComponent(message)}%0A${encodeURIComponent(product.imgUrl)}`
+            : whatsappUrl;
+
+        window.open(whatsappAppUrl, '_blank');
+    };
+
+    return (
+        <section id='productos' className='bg-white dark:bg-dark-bg text-black dark:text-white rounded-3xl '>
+            <div className='container pt-12 pb-20 mx-auto'>
+                <motion.h1
+                    initial={{ opacity: 0, x: -200 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                    className='text-2xl font-bold text-left pb-10 uppercase'
+                >
+                    Nuestros productos
+                </motion.h1>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
+                    {ProductsData.map((product) => (
+                        <div key={product.id} className="block cursor-pointer" onClick={() => sendWhatsAppMessage(product)}>
+                            <motion.div
+                                variants={FadeLeft(product.delay)}
+                                initial="hidden"
+                                whileInView={"visible"}
+                                whileHover={{ scale: 1.1 }}
+                                className="bg-gray-100 dark:bg-gray-800 rounded-3xl px-4 py-2 shadow-lg flex flex-row justify-around items-center gap-3"
+                            >
+                                <img
+                                    src={product.img}
+                                    alt={product.title}
+                                    className='w-[60px] mb-4 scale-150 translate-y-6'
+                                />
+                                <div>
+                                    <h1 className='text-lg font-semibold'>{product.title}</h1>
+                                    <p className='text-lg font-semibold text-secondary dark:text-gray-400'>
+                                        {product.price}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default Products;
